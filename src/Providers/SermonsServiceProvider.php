@@ -4,6 +4,7 @@ namespace FaithGen\Sermons\Providers;
 
 use FaithGen\Sermons\Models\Sermon;
 use FaithGen\Sermons\Observers\SermonObserver;
+use Illuminate\Support\Facades\Route;
 use Illuminate\Support\ServiceProvider;
 
 class SermonsServiceProvider extends ServiceProvider
@@ -16,6 +17,9 @@ class SermonsServiceProvider extends ServiceProvider
     public function boot()
     {
         $this->mergeConfigFrom(__DIR__.'/../config/faithgen-sermons.php', 'faithgen-sermons');
+        $this->registerRoutes();
+
+
         if ($this->app->runningInConsole()) {
             $this->publishes([
                 __DIR__.'/../database/migrations/' => database_path('migrations')
@@ -31,6 +35,22 @@ class SermonsServiceProvider extends ServiceProvider
         }
 
         Sermon::observe(SermonObserver::class);
+    }
+
+    private function registerRoutes()
+    {
+        Route::group($this->routeConfiguration(), function () {
+            $this->loadRoutesFrom(__DIR__ . '/../routes/sermons.php');
+        });
+    }
+
+    private function routeConfiguration()
+    {
+        return [
+            'prefix' => config('faithgen-sermons.prefix'),
+            'namespace' => "FaithGen\Sermons\Http\Controllers",
+            'middleware' => config('faithgen-sermons.middlewares'),
+        ];
     }
 
     /**
