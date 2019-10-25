@@ -17,6 +17,10 @@ class SermonsServiceProvider extends ServiceProvider
             $this->publishes([
                 __DIR__.'/../database/migrations/' => database_path('migrations')
             ], 'faithgen-sermons-migrations');
+
+            $this->publishes([
+                __DIR__.'/../storage/sermons/' => storage_path('app/public/sermons')
+            ], 'faithgen-sermons-storage');
         }
     }
 
