@@ -4,10 +4,10 @@ namespace FaithGen\Sermons\Http\Controllers;
 
 
 use App\Http\Controllers\Controller;
-use FaithGen\SDK\Http\Requests\IndexRequest;
 use FaithGen\Sermons\Events\Created;
 use FaithGen\Sermons\Http\Requests\CreateRequest;
 use FaithGen\Sermons\Http\Requests\GetRequest;
+use FaithGen\Sermons\Http\Requests\IndexRequest;
 use FaithGen\Sermons\Http\Requests\UpdatePictureRequest;
 use FaithGen\Sermons\Http\Requests\UpdateRequest;
 use FaithGen\Sermons\Http\Resources\SermonList as ListResource;
@@ -39,11 +39,15 @@ class SermonController extends Controller
             ->orWhere('title', 'LIKE', '%' . $request->filter_text . '%')
             ->orWhere('preacher', 'LIKE', '%' . $request->filter_text . '%')
             ->latest()->paginate($request->has('limit') ? $request->limit : 15);
-        return ListResource::collection($sermons);
+        if ($request->has('full_sermons'))
+            return SermonResource::collection($sermons);
+        else
+            return ListResource::collection($sermons);
     }
 
-    function view(Sermon $sermon)
+    function view($sermon)
     {
+        $sermon = Sermon::findOrFail($sermon);
         $this->authorize('sermon.view', $sermon);
         SermonResource::withoutWrapping();
         return new SermonResource($sermon);

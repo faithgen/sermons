@@ -5,6 +5,7 @@ namespace FaithGen\Sermons;
 
 
 use FaithGen\SDK\Helpers\Helper;
+use FaithGen\SDK\Helpers\MinistryHelper;
 use FaithGen\Sermons\Models\Sermon;
 
 class SermonHelper extends Helper
