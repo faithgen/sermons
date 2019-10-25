@@ -2,8 +2,8 @@
 
 namespace App\Observers\Ministry;
 
-use App\Events\Ministry\Sermon\Created;
 use FaithGen\SDK\Traits\FileTraits;
+use FaithGen\Sermons\Events\Created;
 use FaithGen\Sermons\Models\Sermon;
 
 class SermonObserver
