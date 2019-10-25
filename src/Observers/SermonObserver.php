@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Observers\Ministry;
+namespace FaithGen\Sermons\Observers;
 
 use FaithGen\SDK\Traits\FileTraits;
 use FaithGen\Sermons\Events\Created;

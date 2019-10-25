@@ -2,8 +2,8 @@
 
 namespace FaithGen\Sermons\Providers;
 
-use App\Observers\Ministry\SermonObserver;
 use FaithGen\Sermons\Models\Sermon;
+use FaithGen\Sermons\Observers\SermonObserver;
 use Illuminate\Support\ServiceProvider;
 
 class SermonsServiceProvider extends ServiceProvider
