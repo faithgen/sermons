@@ -22,10 +22,10 @@
     "extra": {
         "laravel": {
             "providers": [
-                "FaithGen\\Sermons\\Providers\\NewsServiceProvider",
+                "FaithGen\\Sermons\\Providers\\SermonsServiceProvider",
                 "FaithGen\\Sermons\\Providers\\AuthServiceProvider",
                 "FaithGen\\Sermons\\Providers\\EventServiceProvider"
             ]
         }
-    },
+    }
 }
