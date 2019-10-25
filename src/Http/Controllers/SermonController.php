@@ -45,9 +45,8 @@ class SermonController extends Controller
             return ListResource::collection($sermons);
     }
 
-    function view($sermon)
+    function view(Sermon $sermon)
     {
-        $sermon = Sermon::findOrFail($sermon);
         $this->authorize('sermon.view', $sermon);
         SermonResource::withoutWrapping();
         return new SermonResource($sermon);

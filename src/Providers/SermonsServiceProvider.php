@@ -16,21 +16,23 @@ class SermonsServiceProvider extends ServiceProvider
      */
     public function boot()
     {
-        $this->mergeConfigFrom(__DIR__.'/../config/faithgen-sermons.php', 'faithgen-sermons');
+        $this->mergeConfigFrom(__DIR__ . '/../config/faithgen-sermons.php', 'faithgen-sermons');
         $this->registerRoutes();
 
 
         if ($this->app->runningInConsole()) {
-            $this->publishes([
-                __DIR__.'/../database/migrations/' => database_path('migrations')
-            ], 'faithgen-sermons-migrations');
+            if (config('faithgen-sdk.source')) {
+                $this->publishes([
+                    __DIR__ . '/../database/migrations/' => database_path('migrations')
+                ], 'faithgen-sermons-migrations');
+
+                $this->publishes([
+                    __DIR__ . '/../storage/sermons/' => storage_path('app/public/sermons')
+                ], 'faithgen-sermons-storage');
+            }
 
             $this->publishes([
-                __DIR__.'/../storage/sermons/' => storage_path('app/public/sermons')
-            ], 'faithgen-sermons-storage');
-
-            $this->publishes([
-                __DIR__.'/../config/faithgen-sermons.php' => config_path('faithgen-sermons.php')
+                __DIR__ . '/../config/faithgen-sermons.php' => config_path('faithgen-sermons.php')
             ], 'faithgen-sermons-config');
         }
 
@@ -41,6 +43,8 @@ class SermonsServiceProvider extends ServiceProvider
     {
         Route::group($this->routeConfiguration(), function () {
             $this->loadRoutesFrom(__DIR__ . '/../routes/sermons.php');
+            if (config('faithgen-sdk.source'))
+                $this->loadRoutesFrom(__DIR__ . '/../routes/source.php');
         });
     }
 
