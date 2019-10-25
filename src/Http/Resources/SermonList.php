@@ -1,12 +1,12 @@
 <?php
 
-namespace FaithGen\Sermons\Http\Resources\Lists;
+namespace FaithGen\Sermons\Http\Resources;
 
 use Carbon\Carbon;
 use FaithGen\Sermons\SermonHelper;
 use Illuminate\Http\Resources\Json\JsonResource;
 
-class Sermon extends JsonResource
+class SermonList extends JsonResource
 {
     /**
      * Transform the resource into an array.
