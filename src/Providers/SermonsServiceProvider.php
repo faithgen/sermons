@@ -2,6 +2,8 @@
 
 namespace FaithGen\Sermons\Providers;
 
+use App\Observers\Ministry\SermonObserver;
+use FaithGen\Sermons\Models\Sermon;
 use Illuminate\Support\ServiceProvider;
 
 class SermonsServiceProvider extends ServiceProvider
@@ -22,6 +24,8 @@ class SermonsServiceProvider extends ServiceProvider
                 __DIR__.'/../storage/sermons/' => storage_path('app/public/sermons')
             ], 'faithgen-sermons-storage');
         }
+
+        Sermon::observe(SermonObserver::class);
     }
 
     /**

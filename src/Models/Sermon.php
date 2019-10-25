@@ -1,6 +1,6 @@
 <?php
 
-namespace FaithGen\Sermons\Models\Ministry;
+namespace FaithGen\Sermons\Models;
 
 use FaithGen\SDK\Traits\TitleTrait;
 use FaithGen\SDK\Models\UuidModel;
