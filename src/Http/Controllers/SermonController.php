@@ -54,8 +54,12 @@ class SermonController extends Controller
 
     function updatePicture(UpdatePictureRequest $request)
     {
-        if ($this->sermonService->getSermon()->image()->exists())
-            $this->sermonService->deleteFiles($this->sermonService->getSermon());
+        if ($this->sermonService->getSermon()->image()->exists()){
+            try {
+                $this->sermonService->deleteFiles($this->sermonService->getSermon());
+            } catch (\Exception $e) {
+            }
+        }
 
         if ($request->hasImage && $request->has('image'))
             try {

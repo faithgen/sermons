@@ -31,7 +31,10 @@ class UploadImage
     public function handle(Created $event)
     {
         if (request()->has('image')) {
-            $fileName = str_shuffle($event->getSermon()->id . time() . time()) . '.png';
+            if ($event->getSermon()->image()->exists())
+                $fileName = $event->getSermon()->image->name;
+            else
+                $fileName = str_shuffle($event->getSermon()->id . time() . time()) . '.png';
             $ogSave = storage_path('app/public/sermons/original/') . $fileName;
             $this->imageManager->make(request()->image)->save($ogSave);
             $event->getSermon()->image()->updateOrcreate([

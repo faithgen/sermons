@@ -6,6 +6,7 @@ namespace FaithGen\Sermons;
 
 use FaithGen\SDK\Helpers\Helper;
 use FaithGen\SDK\Helpers\MinistryHelper;
+use FaithGen\SDK\SDK;
 use FaithGen\Sermons\Models\Sermon;
 
 class SermonHelper extends Helper
@@ -17,9 +18,9 @@ class SermonHelper extends Helper
         if (!$imageName)
             return MinistryHelper::getImageLink(auth()->user(), $dimen);
         if (!$dimen)
-            return asset('storage/sermons/original/' . $imageName);
+            return SDK::getAsset('storage/sermons/original/' . $imageName);
         else
-            return asset('storage/sermons/'.$dimen .'-'.$dimen.'/' . $imageName);
+            return SDK::getAsset('storage/sermons/'.$dimen .'-'.$dimen.'/' . $imageName);
     }
 
     public static function getAvatar(Sermon $sermon)

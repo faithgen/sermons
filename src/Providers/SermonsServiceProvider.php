@@ -17,8 +17,8 @@ class SermonsServiceProvider extends ServiceProvider
     public function boot()
     {
         $this->mergeConfigFrom(__DIR__ . '/../config/faithgen-sermons.php', 'faithgen-sermons');
-        $this->registerRoutes();
 
+        $this->registerRoutes();
 
         if ($this->app->runningInConsole()) {
             if (config('faithgen-sdk.source')) {
@@ -43,8 +43,9 @@ class SermonsServiceProvider extends ServiceProvider
     {
         Route::group($this->routeConfiguration(), function () {
             $this->loadRoutesFrom(__DIR__ . '/../routes/sermons.php');
-            if (config('faithgen-sdk.source'))
-                $this->loadRoutesFrom(__DIR__ . '/../routes/source.php');
+          /* dd(config('faithgen-sdk.source'));
+            if(config('faithgen-sdk.source'))*/
+                $this->loadRoutesFrom(__DIR__.'/../routes/source.php');
         });
     }
 
