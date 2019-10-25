@@ -2,10 +2,18 @@
 
 namespace FaithGen\Sermons\Providers;
 
-use Illuminate\Support\ServiceProvider;
+use Illuminate\Foundation\Support\Providers\EventServiceProvider as ServiceProvider;
 
 class EventServiceProvider extends ServiceProvider
 {
+    protected $listen = [
+        \FaithGen\Sermons\Events\Created::class => [
+            \FaithGen\Sermons\Listeners\Created\UploadImage::class,
+            \FaithGen\Sermons\Listeners\Created\ProcessImage::class,
+            \FaithGen\Sermons\Listeners\Created\MessageFollowUsers::class,
+            \FaithGen\Sermons\Listeners\Created\S3Upload::class,
+        ],
+    ];
     /**
      * Bootstrap services.
      *
@@ -13,7 +21,7 @@ class EventServiceProvider extends ServiceProvider
      */
     public function boot()
     {
-        //
+        parent::boot();
     }
 
     /**
