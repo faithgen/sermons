@@ -2,7 +2,9 @@
 
 namespace FaithGen\Sermons\Providers;
 
-use Illuminate\Support\ServiceProvider;
+use FaithGen\Sermons\Policies\SermonPolicy;
+use Illuminate\Foundation\Support\Providers\AuthServiceProvider as ServiceProvider;
+use Illuminate\Support\Facades\Gate;
 
 class AuthServiceProvider extends ServiceProvider
 {
@@ -13,7 +15,13 @@ class AuthServiceProvider extends ServiceProvider
      */
     public function boot()
     {
-        //
+        $this->registerPolicies();
+
+        //sermon gate
+        Gate::define('sermon.create', [SermonPolicy::class, 'create']);
+        Gate::define('sermon.update', [SermonPolicy::class, 'update']);
+        Gate::define('sermon.delete', [SermonPolicy::class, 'delete']);
+        Gate::define('sermon.view', [SermonPolicy::class, 'view']);
     }
 
     /**
