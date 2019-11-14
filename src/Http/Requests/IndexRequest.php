@@ -26,8 +26,8 @@ class IndexRequest extends FormRequest
     {
         return [
            'limit' => 'integer:min:1',
-            'filter_text' => 'string',
-            'full_sermons' => 'sometimes'
+            'filter_text' => 'nullable',
+            'full_sermons' => 'nullable'
         ];
     }
 }
