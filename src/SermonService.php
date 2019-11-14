@@ -4,9 +4,9 @@
 namespace FaithGen\Sermons;
 
 
-use FaithGen\Sermons\Models\Sermon;
-use FaithGen\SDK\Services\CRUDServices;
 use FaithGen\SDK\Traits\FileTraits;
+use FaithGen\Sermons\Models\Sermon;
+use InnoFlash\LaraStart\Services\CRUDServices;
 
 class SermonService extends CRUDServices
 {
