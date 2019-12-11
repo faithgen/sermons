@@ -5,6 +5,7 @@ namespace FaithGen\Sermons\Http\Controllers;
 
 use App\Http\Controllers\Controller;
 use FaithGen\Sermons\Events\Created;
+use FaithGen\Sermons\Http\Requests\CommentRequest;
 use FaithGen\Sermons\Http\Requests\CreateRequest;
 use FaithGen\Sermons\Http\Requests\GetRequest;
 use FaithGen\Sermons\Http\Requests\IndexRequest;
@@ -54,11 +55,10 @@ class SermonController extends Controller
 
     function updatePicture(UpdatePictureRequest $request)
     {
-        if ($this->sermonService->getSermon()->image()->exists()){
+        if ($this->sermonService->getSermon()->image()->exists()) {
             try {
                 $this->sermonService->deleteFiles($this->sermonService->getSermon());
-            } catch (\Exception $e) {
-            }
+            } catch (\Exception $e) { }
         }
 
         if ($request->hasImage && $request->has('image'))
@@ -67,8 +67,7 @@ class SermonController extends Controller
                 return $this->successResponse('Preacher image updated successfully!');
             } catch (\Exception $e) {
                 abort(500, $e->getMessage());
-            }
-        else {
+            } else {
             try {
                 $this->sermonService->getSermon()->image()->delete();
                 return $this->successResponse('Preacher image deleted successfully!');
@@ -87,5 +86,19 @@ class SermonController extends Controller
     function update(UpdateRequest $request)
     {
         return $this->sermonService->update($request->validated(), 'Sermon updated successfully');
+    }
+
+    public function comment(CommentRequest $request)
+    {
+        try {
+            $this->sermonService->getSermon()->comments()->create([
+                'comment' => $request->comment,
+                'creatable_id' => auth()->user()->id,
+                'creatable_type' => get_class(auth()->user()),
+            ]);
+            return $this->successResponse('Comment posted');
+        } catch (\Exception $e) {
+            abort(500, $e->getMessage());
+        }
     }
 }
