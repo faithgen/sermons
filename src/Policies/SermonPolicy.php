@@ -35,11 +35,11 @@ class SermonPolicy
         if ($user->account->level !== 'Free')
             return true;
         else {
-            $sermonsCount = Sermon::where('ministry_id', $user->id)->whereBetween('created_at', [Carbon::now()->firstOfMonth(), Carbon::now()->lastOfMonth()])->count();
-            if ($sermonsCount >= SermonHelper::$freeSermonsCount)
-                return false;
-            else
-                return true;
+            $sermonsCount = Sermon::where('ministry_id', $user->id)
+                ->whereBetween('created_at', [Carbon::now()->firstOfMonth(), Carbon::now()->lastOfMonth()])
+                ->count();
+            if ($sermonsCount >= SermonHelper::$freeSermonsCount) return false;
+            else return true;
         }
     }
 
