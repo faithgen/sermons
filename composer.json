@@ -1,32 +1,32 @@
 {
-    "name": "faithgen/sermons",
-    "description": "This is the sermons package for the FaithGen system",
-    "type": "library",
-    "license": "MIT",
-    "authors": [
-        {
-            "name": "innoflash",
-            "email": "innocentmazando@gmail.com"
-        }
-    ],
-    "minimum-stability": "dev",
-    "require": {
-        "intervention/image": "^2.4@dev",
-        "faithgen/sdk": "^1.1.0",
-        "crazybooot/base64-validation": "^1.0"
-    },
-    "autoload": {
-        "psr-4": {
-            "FaithGen\\Sermons\\": "src/"
-        }
-    },
-    "extra": {
-        "laravel": {
-            "providers": [
-                "FaithGen\\Sermons\\Providers\\SermonsServiceProvider",
-                "FaithGen\\Sermons\\Providers\\AuthServiceProvider",
-                "FaithGen\\Sermons\\Providers\\EventServiceProvider"
-            ]
-        }
+  "name": "faithgen/sermons",
+  "description": "This is the sermons package for the FaithGen system",
+  "type": "library",
+  "license": "MIT",
+  "authors": [
+    {
+      "name": "innoflash",
+      "email": "innocentmazando@gmail.com"
     }
+  ],
+  "minimum-stability": "dev",
+  "require": {
+    "intervention/image": "^2.4@dev",
+    "faithgen/sdk": "^1.1",
+    "crazybooot/base64-validation": "^1.0"
+  },
+  "autoload": {
+    "psr-4": {
+      "FaithGen\\Sermons\\": "src/"
+    }
+  },
+  "extra": {
+    "laravel": {
+      "providers": [
+        "FaithGen\\Sermons\\Providers\\SermonsServiceProvider",
+        "FaithGen\\Sermons\\Providers\\AuthServiceProvider",
+        "FaithGen\\Sermons\\Providers\\EventServiceProvider"
+      ]
+    }
+  }
 }
