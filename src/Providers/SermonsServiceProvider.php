@@ -5,6 +5,7 @@ namespace FaithGen\Sermons\Providers;
 use FaithGen\SDK\Traits\ConfigTrait;
 use FaithGen\Sermons\Models\Sermon;
 use FaithGen\Sermons\Observers\SermonObserver;
+use FaithGen\Sermons\SermonService;
 use Illuminate\Support\ServiceProvider;
 
 class SermonsServiceProvider extends ServiceProvider
@@ -39,6 +40,7 @@ class SermonsServiceProvider extends ServiceProvider
         ], 'faithgen-sermons-config');
 
         Sermon::observe(SermonObserver::class);
+        $this->app->singleton(SermonService::class, SermonService::class);
     }
 
 
