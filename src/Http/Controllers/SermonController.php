@@ -15,6 +15,9 @@ use FaithGen\Sermons\Http\Resources\SermonList as ListResource;
 use FaithGen\Sermons\Http\Resources\Sermon as SermonResource;
 use FaithGen\Sermons\Models\Sermon;
 use FaithGen\Sermons\SermonService;
+use Illuminate\Http\Request;
+use InnoFlash\LaraStart\Http\Helper;
+use FaithGen\SDK\Http\Resources\Comment as CommentsResource;
 
 class SermonController extends Controller
 {
@@ -100,5 +103,12 @@ class SermonController extends Controller
         } catch (\Exception $e) {
             abort(500, $e->getMessage());
         }
+    }
+
+    public function comments(Request $request, Sermon $sermon)
+    {
+        $comments = $sermon->comments()->latest()->paginate(Helper::getLimit($request));
+        CommentsResource::wrap('comments');
+        return CommentsResource::collection($comments);
     }
 }
