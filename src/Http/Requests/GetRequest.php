@@ -2,7 +2,9 @@
 
 namespace FaithGen\Sermons\Http\Requests;
 
+use FaithGen\SDK\Models\Ministry;
 use FaithGen\Sermons\SermonHelper;
+use FaithGen\Sermons\SermonService;
 use Illuminate\Foundation\Http\FormRequest;
 
 class GetRequest extends FormRequest
@@ -12,8 +14,9 @@ class GetRequest extends FormRequest
      *
      * @return bool
      */
-    public function authorize()
+    public function authorize(SermonService $sermonService)
     {
+        if (auth()->user() instanceof Ministry) return $this->user()->can('sermon.view', $sermonService->getSermon());
         return true;
     }
 

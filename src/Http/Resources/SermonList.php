@@ -19,6 +19,7 @@ class SermonList extends JsonResource
         return [
             'id' => $this->id,
             'title' => $this->title,
+            'comments' => $this->comments()->count(),
             'preacher' => [
                 'name' => $this->preacher,
                 'avatar' => SermonHelper::getAvatar($this->resource)

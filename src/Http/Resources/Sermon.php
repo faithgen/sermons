@@ -19,6 +19,7 @@ class Sermon extends JsonResource
         return [
             'id' => $this->id,
             'title' => $this->title,
+            'comments' => $this->comments()->count(),
             'comments' => [
                 'count' => number_format($this->comments()->count()),
             ],

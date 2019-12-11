@@ -3,7 +3,7 @@
 namespace FaithGen\Sermons\Http\Requests;
 
 use FaithGen\Sermons\SermonHelper;
-use FaithGen\Sermons\Models\Sermon;
+use FaithGen\Sermons\SermonService;
 use Illuminate\Foundation\Http\FormRequest;
 
 class UpdatePictureRequest extends FormRequest
@@ -13,10 +13,9 @@ class UpdatePictureRequest extends FormRequest
      *
      * @return bool
      */
-    public function authorize()
+    public function authorize(SermonService $sermonService)
     {
-        $sermon = Sermon::findOrFail(request()->sermon_id);
-        return $this->user()->can('sermon.update', $sermon);
+        return $this->user()->can('sermon.update', $sermonService->getSermon());
     }
 
     /**

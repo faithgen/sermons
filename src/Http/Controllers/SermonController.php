@@ -2,22 +2,20 @@
 
 namespace FaithGen\Sermons\Http\Controllers;
 
-
-use App\Http\Controllers\Controller;
-use FaithGen\Sermons\Events\Created;
-use FaithGen\Sermons\Http\Requests\CommentRequest;
-use FaithGen\Sermons\Http\Requests\CreateRequest;
-use FaithGen\Sermons\Http\Requests\GetRequest;
-use FaithGen\Sermons\Http\Requests\IndexRequest;
-use FaithGen\Sermons\Http\Requests\UpdatePictureRequest;
-use FaithGen\Sermons\Http\Requests\UpdateRequest;
-use FaithGen\Sermons\Http\Resources\SermonList as ListResource;
-use FaithGen\Sermons\Http\Resources\Sermon as SermonResource;
+use Illuminate\Http\Request;
 use FaithGen\Sermons\Models\Sermon;
 use FaithGen\Sermons\SermonService;
-use Illuminate\Http\Request;
-use InnoFlash\LaraStart\Http\Helper;
-use FaithGen\SDK\Http\Resources\Comment as CommentsResource;
+use App\Http\Controllers\Controller;
+use FaithGen\Sermons\Events\Created;
+use FaithGen\SDK\Helpers\CommentHelper;
+use FaithGen\Sermons\Http\Requests\GetRequest;
+use FaithGen\Sermons\Http\Requests\IndexRequest;
+use FaithGen\Sermons\Http\Requests\CreateRequest;
+use FaithGen\Sermons\Http\Requests\UpdateRequest;
+use FaithGen\Sermons\Http\Requests\CommentRequest;
+use FaithGen\Sermons\Http\Requests\UpdatePictureRequest;
+use FaithGen\Sermons\Http\Resources\Sermon as SermonResource;
+use FaithGen\Sermons\Http\Resources\SermonList as ListResource;
 
 class SermonController extends Controller
 {
@@ -93,22 +91,11 @@ class SermonController extends Controller
 
     public function comment(CommentRequest $request)
     {
-        try {
-            $this->sermonService->getSermon()->comments()->create([
-                'comment' => $request->comment,
-                'creatable_id' => auth()->user()->id,
-                'creatable_type' => get_class(auth()->user()),
-            ]);
-            return $this->successResponse('Comment posted');
-        } catch (\Exception $e) {
-            abort(500, $e->getMessage());
-        }
+        return CommentHelper::createComment($this->sermonService->getSermon(), $request);
     }
 
     public function comments(Request $request, Sermon $sermon)
     {
-        $comments = $sermon->comments()->latest()->paginate(Helper::getLimit($request));
-        CommentsResource::wrap('comments');
-        return CommentsResource::collection($comments);
+        return CommentHelper::getComments($sermon, $request);
     }
 }

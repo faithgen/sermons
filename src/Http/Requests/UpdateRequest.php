@@ -3,9 +3,9 @@
 namespace FaithGen\Sermons\Http\Requests;
 
 use FaithGen\Sermons\SermonHelper;
-use FaithGen\Sermons\Models\Sermon;
-use Illuminate\Auth\Access\AuthorizationException;
+use FaithGen\Sermons\SermonService;
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Auth\Access\AuthorizationException;
 
 class UpdateRequest extends FormRequest
 {
@@ -14,10 +14,9 @@ class UpdateRequest extends FormRequest
      *
      * @return bool
      */
-    public function authorize()
+    public function authorize(SermonService $sermonService)
     {
-        $sermon = Sermon::findOrFail(request()->sermon_id);
-        return $this->user()->can('sermon.update', $sermon);
+        return $this->user()->can('sermon.update', $sermonService->getSermon());
     }
 
     /**
