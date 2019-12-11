@@ -96,6 +96,7 @@ class SermonController extends Controller
 
     public function comments(Request $request, Sermon $sermon)
     {
+        $this->authorize('sermon.view', $sermon);
         return CommentHelper::getComments($sermon, $request);
     }
 }
