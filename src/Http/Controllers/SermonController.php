@@ -3,22 +3,27 @@
 namespace FaithGen\Sermons\Http\Controllers;
 
 use Illuminate\Http\Request;
+use Illuminate\Routing\Controller;
 use FaithGen\Sermons\Models\Sermon;
 use FaithGen\Sermons\SermonService;
-use App\Http\Controllers\Controller;
 use FaithGen\Sermons\Events\Created;
 use FaithGen\SDK\Helpers\CommentHelper;
+use InnoFlash\LaraStart\Traits\APIResponses;
+use Illuminate\Foundation\Bus\DispatchesJobs;
 use FaithGen\Sermons\Http\Requests\GetRequest;
 use FaithGen\Sermons\Http\Requests\IndexRequest;
 use FaithGen\Sermons\Http\Requests\CreateRequest;
 use FaithGen\Sermons\Http\Requests\UpdateRequest;
 use FaithGen\Sermons\Http\Requests\CommentRequest;
+use Illuminate\Foundation\Validation\ValidatesRequests;
 use FaithGen\Sermons\Http\Requests\UpdatePictureRequest;
+use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 use FaithGen\Sermons\Http\Resources\Sermon as SermonResource;
 use FaithGen\Sermons\Http\Resources\SermonList as ListResource;
 
 class SermonController extends Controller
 {
+    use AuthorizesRequests, ValidatesRequests, APIResponses, DispatchesJobs;
     /**
      * @var SermonService
      */
@@ -59,7 +64,8 @@ class SermonController extends Controller
         if ($this->sermonService->getSermon()->image()->exists()) {
             try {
                 $this->sermonService->deleteFiles($this->sermonService->getSermon());
-            } catch (\Exception $e) { }
+            } catch (\Exception $e) {
+            }
         }
 
         if ($request->hasImage && $request->has('image'))
