@@ -19,8 +19,6 @@ class SermonsServiceProvider extends ServiceProvider
      */
     public function boot()
     {
-        $this->mergeConfigFrom(__DIR__ . '/../config/faithgen-sermons.php', 'faithgen-sermons');
-
         $this->registerRoutes(__DIR__ . '/../routes/sermons.php', __DIR__ . '/../routes/source.php');
 
         $this->setUpSourceFiles(function () {
@@ -40,9 +38,7 @@ class SermonsServiceProvider extends ServiceProvider
         ], 'faithgen-sermons-config');
 
         Sermon::observe(SermonObserver::class);
-        $this->app->singleton(SermonService::class, SermonService::class);
     }
-
 
     /**
      * Register services.
@@ -51,7 +47,8 @@ class SermonsServiceProvider extends ServiceProvider
      */
     public function register()
     {
-        //
+        $this->mergeConfigFrom(__DIR__ . '/../config/faithgen-sermons.php', 'faithgen-sermons');
+        $this->app->singleton(SermonService::class, SermonService::class);
     }
 
     /**
