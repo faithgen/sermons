@@ -19,7 +19,7 @@ class SermonPolicy
      * @param Sermon $sermon
      * @return mixed
      */
-    public static function view(Ministry $user, Sermon $sermon)
+    public function view(Ministry $user, Sermon $sermon)
     {
         return $user->id === $sermon->ministry_id;
     }
@@ -30,7 +30,7 @@ class SermonPolicy
      * @param Ministry $user
      * @return mixed
      */
-    public static function create(Ministry $user)
+    public function create(Ministry $user)
     {
         if ($user->account->level !== 'Free')
             return true;
@@ -50,7 +50,7 @@ class SermonPolicy
      * @param Sermon $sermon
      * @return mixed
      */
-    public static function update(Ministry $user, Sermon $sermon)
+    public function update(Ministry $user, Sermon $sermon)
     {
         return $user->id === $sermon->ministry_id;
     }

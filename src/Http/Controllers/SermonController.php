@@ -4,10 +4,13 @@ namespace FaithGen\Sermons\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controller;
+use FaithGen\Sermons\Jobs\S3Upload;
 use FaithGen\Sermons\Models\Sermon;
 use FaithGen\Sermons\SermonService;
-use FaithGen\Sermons\Events\Created;
+use FaithGen\Sermons\Jobs\UploadImage;
 use FaithGen\SDK\Helpers\CommentHelper;
+use FaithGen\Sermons\Jobs\ProcessImage;
+use FaithGen\Sermons\Jobs\MessageFollowers;
 use InnoFlash\LaraStart\Traits\APIResponses;
 use Illuminate\Foundation\Bus\DispatchesJobs;
 use FaithGen\Sermons\Http\Requests\GetRequest;
@@ -72,7 +75,11 @@ class SermonController extends Controller
 
         if ($request->hasImage && $request->has('image'))
             try {
-                event(new Created($this->sermonService->getSermon()));
+                MessageFollowers::withChain([
+                    new UploadImage($this->sermonService->getSermon(), request('image')),
+                    new ProcessImage($this->sermonService->getSermon()),
+                    new S3Upload($this->sermonService->getSermon())
+                ])->dispatch($this->sermonService->getSermon());
                 return $this->successResponse('Preacher image updated successfully!');
             } catch (\Exception $e) {
                 abort(500, $e->getMessage());
