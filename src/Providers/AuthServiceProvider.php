@@ -24,7 +24,6 @@ class AuthServiceProvider extends ServiceProvider
         //sermon gate
         Gate::define('sermon.update', [SermonPolicy::class, 'update']);
         Gate::define('sermon.delete', [SermonPolicy::class, 'delete']);
-        Gate::define('sermon.view', [SermonPolicy::class, 'view']);
     }
 
     /**

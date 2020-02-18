@@ -56,7 +56,7 @@ class SermonController extends Controller
 
     function view(Sermon $sermon)
     {
-        $this->authorize('sermon.view', $sermon);
+        $this->authorize('view', $sermon);
         SermonResource::withoutWrapping();
         return new SermonResource($sermon);
     }

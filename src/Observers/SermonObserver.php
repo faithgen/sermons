@@ -5,7 +5,6 @@ namespace FaithGen\Sermons\Observers;
 use FaithGen\SDK\Traits\FileTraits;
 use FaithGen\Sermons\Jobs\S3Upload;
 use FaithGen\Sermons\Models\Sermon;
-use FaithGen\Sermons\Events\Created;
 use FaithGen\Sermons\Jobs\UploadImage;
 use FaithGen\Sermons\Jobs\ProcessImage;
 use FaithGen\Sermons\Jobs\MessageFollowers;
@@ -52,27 +51,5 @@ class SermonObserver
             $this->deleteFiles($sermon);
             $sermon->image()->delete();
         }
-    }
-
-    /**
-     * Handle the sermon "restored" event.
-     *
-     * @param Sermon $sermon
-     * @return void
-     */
-    public function restored(Sermon $sermon)
-    {
-        //
-    }
-
-    /**
-     * Handle the sermon "force deleted" event.
-     *
-     * @param Sermon $sermon
-     * @return void
-     */
-    public function forceDeleted(Sermon $sermon)
-    {
-        //
     }
 }
