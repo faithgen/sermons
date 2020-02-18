@@ -52,7 +52,6 @@ class SermonPolicy
      */
     public function update(Ministry $user, Sermon $sermon)
     {
-        dd($user->id, $sermon->ministry_id);
         return $user->id === $sermon->ministry_id;
     }
 
