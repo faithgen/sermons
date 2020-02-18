@@ -95,7 +95,7 @@ class SermonController extends Controller
 
     function delete(GetRequest $request)
     {
-        $this->authorize('sermon.delete', $this->sermonService->getSermon());
+        $this->authorize('delete', $this->sermonService->getSermon());
         return $this->sermonService->destroy('Sermon deleted');
     }
 

@@ -5,7 +5,6 @@ namespace FaithGen\Sermons\Providers;
 use FaithGen\Sermons\Models\Sermon;
 use FaithGen\Sermons\Policies\SermonPolicy;
 use Illuminate\Foundation\Support\Providers\AuthServiceProvider as ServiceProvider;
-use Illuminate\Support\Facades\Gate;
 
 class AuthServiceProvider extends ServiceProvider
 {
@@ -21,8 +20,6 @@ class AuthServiceProvider extends ServiceProvider
     {
         $this->registerPolicies();
 
-        //sermon gate
-        Gate::define('sermon.delete', [SermonPolicy::class, 'delete']);
     }
 
     /**
