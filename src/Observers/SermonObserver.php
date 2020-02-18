@@ -22,11 +22,11 @@ class SermonObserver
      */
     public function created(Sermon $sermon)
     {
-       MessageFollowers::withChain([
-           new UploadImage($sermon, request('image')),
-           new ProcessImage($sermon),
-           new S3Upload($sermon)
-       ])->dispatch($sermon);
+        MessageFollowers::withChain([
+            new UploadImage($sermon, request('image')),
+            new ProcessImage($sermon),
+            new S3Upload($sermon)
+        ])->dispatch($sermon);
     }
 
     /**
