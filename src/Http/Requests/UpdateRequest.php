@@ -16,7 +16,9 @@ class UpdateRequest extends FormRequest
      */
     public function authorize(SermonService $sermonService)
     {
-        return $this->user()->can('sermon.update', $sermonService->getSermon());
+        dd(request()->all());
+        return $sermonService->getSermon() 
+            && $this->user()->can('update', $sermonService->getSermon());
     }
 
     /**
