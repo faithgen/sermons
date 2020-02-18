@@ -42,9 +42,11 @@ class SermonController extends Controller
     function index(IndexRequest $request)
     {
         $sermons = auth()->user()->sermons()
-            ->where('preacher', 'LIKE', '%' . $request->filter_text . '%')
-            ->orWhere('title', 'LIKE', '%' . $request->filter_text . '%')
-            ->orWhere('preacher', 'LIKE', '%' . $request->filter_text . '%')
+            ->where(function ($sermon) use ($request) {
+                return $sermon->where('preacher', 'LIKE', '%' . $request->filter_text . '%')
+                    ->orWhere('title', 'LIKE', '%' . $request->filter_text . '%')
+                    ->orWhere('preacher', 'LIKE', '%' . $request->filter_text . '%');
+            })
             ->latest()->paginate($request->has('limit') ? $request->limit : 15);
         if ($request->has('full_sermons'))
             return SermonResource::collection($sermons);
