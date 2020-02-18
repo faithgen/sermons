@@ -2,6 +2,7 @@
 
 namespace FaithGen\Sermons\Http\Requests;
 
+use FaithGen\Sermons\Models\Sermon;
 use FaithGen\Sermons\SermonHelper;
 use Illuminate\Auth\Access\AuthorizationException;
 use Illuminate\Foundation\Http\FormRequest;
@@ -15,7 +16,7 @@ class CreateRequest extends FormRequest
      */
     public function authorize()
     {
-        return $this->user()->can('sermon.create');
+        return $this->user()->can('create', Sermon::class);
     }
 
     /**
