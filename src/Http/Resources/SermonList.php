@@ -5,6 +5,7 @@ namespace FaithGen\Sermons\Http\Resources;
 use Carbon\Carbon;
 use FaithGen\Sermons\SermonHelper;
 use Illuminate\Http\Resources\Json\JsonResource;
+use InnoFlash\LaraStart\Http\Helper;
 
 class SermonList extends JsonResource
 {
@@ -24,7 +25,7 @@ class SermonList extends JsonResource
                 'name' => $this->preacher,
                 'avatar' => SermonHelper::getAvatar($this->resource)
             ],
-            'date' => SermonHelper::getDates(Carbon::parse($this->date)),
+            'date' => Helper::getDates(Carbon::parse($this->date)),
             'comments' => [
                 'count' => number_format($this->comments()->count()),
             ]
