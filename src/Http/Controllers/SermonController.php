@@ -39,7 +39,7 @@ class SermonController extends Controller
 
     function create(CreateRequest $request)
     {
-        return $this->sermonService->createFromRelationship($request->validated());
+        return $this->sermonService->createFromParent($request->validated());
     }
 
     function index(IndexRequest $request)
@@ -51,6 +51,9 @@ class SermonController extends Controller
                     ->orWhere('preacher', 'LIKE', '%' . $request->filter_text . '%');
             })
             ->latest()->paginate($request->has('limit') ? $request->limit : 15);
+
+	SermonResource::wrap('sermons');
+
         if ($request->has('full_sermons'))
             return SermonResource::collection($sermons);
         else
