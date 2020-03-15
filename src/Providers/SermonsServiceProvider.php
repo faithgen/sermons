@@ -19,7 +19,7 @@ class SermonsServiceProvider extends ServiceProvider
      */
     public function boot()
     {
-        $this->registerRoutes(__DIR__ . '/../routes/sermons.php', __DIR__ . '/../routes/source.php');
+        $this->registerRoutes(__DIR__ . '/../../routes/sermons.php', __DIR__ . '/../../routes/source.php');
 
         $this->setUpSourceFiles(function () {
             $this->loadMigrationsFrom(__DIR__ . '/../../database/migrations/');
