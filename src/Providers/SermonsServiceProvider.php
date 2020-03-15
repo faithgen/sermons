@@ -29,7 +29,7 @@ class SermonsServiceProvider extends ServiceProvider
             ], 'faithgen-sermons-migrations');
 
             $this->publishes([
-                __DIR__ . '/../storage/sermons/' => storage_path('app/public/sermons')
+                __DIR__ . '/../../storage/sermons/' => storage_path('app/public/sermons')
             ], 'faithgen-sermons-storage');
         });
 
