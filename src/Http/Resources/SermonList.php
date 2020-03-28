@@ -5,7 +5,7 @@ namespace FaithGen\Sermons\Http\Resources;
 use Carbon\Carbon;
 use FaithGen\Sermons\SermonHelper;
 use Illuminate\Http\Resources\Json\JsonResource;
-use InnoFlash\LaraStart\Http\Helper;
+use InnoFlash\LaraStart\Helper;
 
 class SermonList extends JsonResource
 {
