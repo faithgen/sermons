@@ -11,6 +11,7 @@ use FaithGen\Sermons\Jobs\UploadImage;
 use FaithGen\SDK\Helpers\CommentHelper;
 use FaithGen\Sermons\Jobs\ProcessImage;
 use FaithGen\Sermons\Jobs\MessageFollowers;
+use InnoFlash\LaraStart\Helper;
 use InnoFlash\LaraStart\Traits\APIResponses;
 use Illuminate\Foundation\Bus\DispatchesJobs;
 use FaithGen\Sermons\Http\Requests\GetRequest;
@@ -42,17 +43,21 @@ class SermonController extends Controller
         return $this->sermonService->createFromParent($request->validated());
     }
 
+    /**
+     * Fetches a list of sermons.
+     *
+     * @param IndexRequest $request
+     * @return \Illuminate\Http\Resources\Json\AnonymousResourceCollection
+     */
     function index(IndexRequest $request)
     {
-        $sermons = auth()->user()->sermons()
-            ->where(function ($sermon) use ($request) {
-                return $sermon->where('preacher', 'LIKE', '%' . $request->filter_text . '%')
-                    ->orWhere('title', 'LIKE', '%' . $request->filter_text . '%')
-                    ->orWhere('preacher', 'LIKE', '%' . $request->filter_text . '%');
-            })
-            ->latest()->paginate($request->has('limit') ? $request->limit : 15);
+        $sermons = auth()->user()
+            ->sermons()
+            ->latest()
+            ->where(fn($sermon) => $sermon->search(['preacher', 'title', 'preacher',], $request->filter_text))
+            ->paginate(Helper::getLimit($request));
 
-	SermonResource::wrap('sermons');
+        SermonResource::wrap('sermons');
 
         if ($request->has('full_sermons'))
             return SermonResource::collection($sermons);
@@ -60,13 +65,28 @@ class SermonController extends Controller
             return ListResource::collection($sermons);
     }
 
+    /**
+     * Get a single sermon details.
+     *
+     * @param Sermon $sermon
+     * @return SermonResource
+     * @throws \Illuminate\Auth\Access\AuthorizationException
+     */
     function view(Sermon $sermon)
     {
         $this->authorize('view', $sermon);
+
         SermonResource::withoutWrapping();
+
         return new SermonResource($sermon);
     }
 
+    /**
+     * Update preacher image.
+     *
+     * @param UpdatePictureRequest $request
+     * @return mixed
+     */
     function updatePicture(UpdatePictureRequest $request)
     {
         if ($this->sermonService->getSermon()->image()->exists()) {
@@ -96,25 +116,54 @@ class SermonController extends Controller
         }
     }
 
+    /**
+     * Delete sermon.
+     *
+     * @param GetRequest $request
+     * @return mixed
+     * @throws \Illuminate\Auth\Access\AuthorizationException
+     */
     function delete(GetRequest $request)
     {
         $this->authorize('delete', $this->sermonService->getSermon());
+
         return $this->sermonService->destroy('Sermon deleted');
     }
 
+    /**
+     * Update sermon.
+     *
+     * @param UpdateRequest $request
+     * @return \Illuminate\Http\JsonResponse|mixed
+     */
     function update(UpdateRequest $request)
     {
         return $this->sermonService->update($request->validated(), 'Sermon updated successfully');
     }
 
+    /**
+     * Comment a sermon.
+     *
+     * @param CommentRequest $request
+     * @return \Illuminate\Http\JsonResponse
+     */
     public function comment(CommentRequest $request)
     {
         return CommentHelper::createComment($this->sermonService->getSermon(), $request);
     }
 
+    /**
+     * Sermons posted to a sermon.
+     *
+     * @param Request $request
+     * @param Sermon $sermon
+     * @return \Illuminate\Http\Resources\Json\AnonymousResourceCollection
+     * @throws \Illuminate\Auth\Access\AuthorizationException
+     */
     public function comments(Request $request, Sermon $sermon)
     {
         $this->authorize('view', $sermon);
+
         return CommentHelper::getComments($sermon, $request);
     }
 }
