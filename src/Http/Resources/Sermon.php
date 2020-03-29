@@ -3,7 +3,7 @@
 namespace FaithGen\Sermons\Http\Resources;
 
 use Carbon\Carbon;
-use FaithGen\Sermons\SermonHelper;
+use FaithGen\SDK\Helpers\ImageHelper;
 use Illuminate\Http\Resources\Json\JsonResource;
 use InnoFlash\LaraStart\Helper;
 
@@ -26,7 +26,7 @@ class Sermon extends JsonResource
             ],
             'preacher' => [
                 'name' => $this->preacher,
-                'avatar' => SermonHelper::getAvatar($this->resource),
+                'avatar' => ImageHelper::getImage('sermons', $this->image, config('faithgen-sdk.ministries-server')),
             ],
             'date' => Helper::getDates(Carbon::parse($this->date)),
             'resource' => $this['resource'],

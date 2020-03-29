@@ -48,6 +48,7 @@ class SermonsServiceProvider extends ServiceProvider
     public function register()
     {
         $this->mergeConfigFrom(__DIR__ . '/../../config/faithgen-sermons.php', 'faithgen-sermons');
+
         $this->app->singleton(SermonService::class);
     }
 
@@ -59,7 +60,6 @@ class SermonsServiceProvider extends ServiceProvider
     {
         return [
             'prefix' => config('faithgen-sermons.prefix'),
-            'namespace' => "FaithGen\Sermons\Http\Controllers",
             'middleware' => config('faithgen-sermons.middlewares'),
         ];
     }
