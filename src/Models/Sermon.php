@@ -13,6 +13,7 @@ class Sermon extends UuidModel
 {
     use  CommentableTrait, BelongsToMinistryTrait, StorageTrait, TitleTrait, ImageableTrait;
 
+    protected $table = 'fg_sermons';
     protected $casts = [
         'main_verses' => 'array',
         'reference_verses' => 'array',
