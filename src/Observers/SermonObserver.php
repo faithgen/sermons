@@ -3,11 +3,11 @@
 namespace FaithGen\Sermons\Observers;
 
 use FaithGen\SDK\Traits\FileTraits;
-use FaithGen\Sermons\Jobs\S3Upload;
-use FaithGen\Sermons\Models\Sermon;
-use FaithGen\Sermons\Jobs\UploadImage;
-use FaithGen\Sermons\Jobs\ProcessImage;
 use FaithGen\Sermons\Jobs\MessageFollowers;
+use FaithGen\Sermons\Jobs\ProcessImage;
+use FaithGen\Sermons\Jobs\S3Upload;
+use FaithGen\Sermons\Jobs\UploadImage;
+use FaithGen\Sermons\Models\Sermon;
 
 class SermonObserver
 {
@@ -24,7 +24,7 @@ class SermonObserver
         MessageFollowers::withChain([
             new UploadImage($sermon, request('image')),
             new ProcessImage($sermon),
-            new S3Upload($sermon)
+            new S3Upload($sermon),
         ])->dispatch($sermon);
     }
 

@@ -27,7 +27,7 @@ class SermonList extends JsonResource
             'date' => Helper::getDates(Carbon::parse($this->date)),
             'comments' => [
                 'count' => number_format($this->comments()->count()),
-            ]
+            ],
         ];
     }
 }

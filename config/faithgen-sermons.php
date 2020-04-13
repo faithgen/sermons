@@ -2,12 +2,12 @@
 
 return [
     /**
-     * The prefix to your sermons routes
+     * The prefix to your sermons routes.
      */
     'prefix' => 'api',
 
     /**
-     * add more middlewares here if any
+     * add more middlewares here if any.
      */
     'middlewares' => [
         'auth:api', // this filters for authenticated requests from the ministry

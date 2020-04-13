@@ -2,12 +2,12 @@
 
 namespace FaithGen\Sermons\Jobs;
 
-use Illuminate\Bus\Queueable;
 use FaithGen\Sermons\Models\Sermon;
-use Illuminate\Queue\SerializesModels;
-use Illuminate\Queue\InteractsWithQueue;
+use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
+use Illuminate\Queue\InteractsWithQueue;
+use Illuminate\Queue\SerializesModels;
 
 class S3Upload implements ShouldQueue
 {

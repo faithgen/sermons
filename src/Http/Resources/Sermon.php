@@ -34,7 +34,7 @@ class Sermon extends JsonResource
                 'main' => $this->main_verses,
                 'reference' => $this->reference_verses,
             ],
-            'sermon' => $this->sermon
+            'sermon' => $this->sermon,
         ];
     }
 }

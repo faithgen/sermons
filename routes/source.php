@@ -4,7 +4,7 @@ use FaithGen\Sermons\Http\Controllers\SermonController;
 use Illuminate\Support\Facades\Route;
 
 /**
- * Handles sermons details
+ * Handles sermons details.
  */
 Route::name('sermons.')
     ->prefix('sermons/')

@@ -2,12 +2,12 @@
 
 namespace FaithGen\Sermons\Models;
 
-use FaithGen\SDK\Traits\TitleTrait;
 use FaithGen\SDK\Models\UuidModel;
 use FaithGen\SDK\Traits\Relationships\Belongs\BelongsToMinistryTrait;
 use FaithGen\SDK\Traits\Relationships\Morphs\CommentableTrait;
 use FaithGen\SDK\Traits\Relationships\Morphs\ImageableTrait;
 use FaithGen\SDK\Traits\StorageTrait;
+use FaithGen\SDK\Traits\TitleTrait;
 
 class Sermon extends UuidModel
 {
@@ -21,31 +21,33 @@ class Sermon extends UuidModel
     //****************************************************************************//
     //***************************** MODEL ATTRIBUTES *****************************//
     //****************************************************************************//
-    function getPreacherAttribute($val)
+    public function getPreacherAttribute($val)
     {
         return ucwords($val);
     }
 
-    function getSermonAttribute($val)
+    public function getSermonAttribute($val)
     {
         return ucfirst($val);
     }
+
     //****************************************************************************//
     //***************************** MODEL ATTRIBUTES *****************************//
     //****************************************************************************//
 
-    function formatVerse($verse)
+    public function formatVerse($verse)
     {
         ucwords($verse);
+
         return true;
     }
 
-    function filesDir()
+    public function filesDir()
     {
         return 'sermons';
     }
 
-    function getFileName()
+    public function getFileName()
     {
         return $this->image->name;
     }

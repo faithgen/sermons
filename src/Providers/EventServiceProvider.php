@@ -14,6 +14,7 @@ class EventServiceProvider extends ServiceProvider
             \FaithGen\Sermons\Listeners\Created\S3Upload::class,
         ],
     ];
+
     /**
      * Bootstrap services.
      *
