@@ -16,7 +16,10 @@ class GetRequest extends FormRequest
      */
     public function authorize(SermonService $sermonService)
     {
-        if (auth()->user() instanceof Ministry) return $this->user()->can('view', $sermonService->getSermon());
+        if (auth()->user() instanceof Ministry) {
+            return $this->user()->can('view', $sermonService->getSermon());
+        }
+
         return true;
     }
 
@@ -28,7 +31,7 @@ class GetRequest extends FormRequest
     public function rules()
     {
         return [
-            'sermon_id' => SermonHelper::$idValidation
+            'sermon_id' => SermonHelper::$idValidation,
         ];
     }
 }

@@ -15,7 +15,7 @@ class UpdatePictureRequest extends FormRequest
      */
     public function authorize(SermonService $sermonService)
     {
-        return $sermonService->getSermon() 
+        return $sermonService->getSermon()
             && $this->user()->can('update', $sermonService->getSermon());
     }
 
@@ -29,7 +29,7 @@ class UpdatePictureRequest extends FormRequest
         return [
             'image' => 'base64image',
             'sermon_id' => SermonHelper::$idValidation,
-            'hasImage' => 'required|boolean'
+            'hasImage' => 'required|boolean',
         ];
     }
 }

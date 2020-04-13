@@ -2,28 +2,28 @@
 
 namespace FaithGen\Sermons\Http\Controllers;
 
-use Illuminate\Http\Request;
-use Illuminate\Routing\Controller;
-use FaithGen\Sermons\Jobs\S3Upload;
-use FaithGen\Sermons\Models\Sermon;
-use FaithGen\Sermons\SermonService;
-use FaithGen\Sermons\Jobs\UploadImage;
 use FaithGen\SDK\Helpers\CommentHelper;
-use FaithGen\Sermons\Jobs\ProcessImage;
-use FaithGen\Sermons\Jobs\MessageFollowers;
-use InnoFlash\LaraStart\Helper;
-use InnoFlash\LaraStart\Traits\APIResponses;
-use Illuminate\Foundation\Bus\DispatchesJobs;
+use FaithGen\Sermons\Http\Requests\CommentRequest;
+use FaithGen\Sermons\Http\Requests\CreateRequest;
 use FaithGen\Sermons\Http\Requests\GetRequest;
 use FaithGen\Sermons\Http\Requests\IndexRequest;
-use FaithGen\Sermons\Http\Requests\CreateRequest;
-use FaithGen\Sermons\Http\Requests\UpdateRequest;
-use FaithGen\Sermons\Http\Requests\CommentRequest;
-use Illuminate\Foundation\Validation\ValidatesRequests;
 use FaithGen\Sermons\Http\Requests\UpdatePictureRequest;
-use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
+use FaithGen\Sermons\Http\Requests\UpdateRequest;
 use FaithGen\Sermons\Http\Resources\Sermon as SermonResource;
 use FaithGen\Sermons\Http\Resources\SermonList as ListResource;
+use FaithGen\Sermons\Jobs\MessageFollowers;
+use FaithGen\Sermons\Jobs\ProcessImage;
+use FaithGen\Sermons\Jobs\S3Upload;
+use FaithGen\Sermons\Jobs\UploadImage;
+use FaithGen\Sermons\Models\Sermon;
+use FaithGen\Sermons\SermonService;
+use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
+use Illuminate\Foundation\Bus\DispatchesJobs;
+use Illuminate\Foundation\Validation\ValidatesRequests;
+use Illuminate\Http\Request;
+use Illuminate\Routing\Controller;
+use InnoFlash\LaraStart\Helper;
+use InnoFlash\LaraStart\Traits\APIResponses;
 
 class SermonController extends Controller
 {
@@ -38,7 +38,7 @@ class SermonController extends Controller
         $this->sermonService = $sermonService;
     }
 
-    function create(CreateRequest $request)
+    public function create(CreateRequest $request)
     {
         return $this->sermonService->createFromParent($request->validated());
     }
@@ -49,20 +49,21 @@ class SermonController extends Controller
      * @param IndexRequest $request
      * @return \Illuminate\Http\Resources\Json\AnonymousResourceCollection
      */
-    function index(IndexRequest $request)
+    public function index(IndexRequest $request)
     {
         $sermons = auth()->user()
             ->sermons()
             ->latest()
-            ->where(fn($sermon) => $sermon->search(['preacher', 'title', 'preacher',], $request->filter_text))
+            ->where(fn ($sermon) => $sermon->search(['preacher', 'title', 'preacher'], $request->filter_text))
             ->paginate(Helper::getLimit($request));
 
         SermonResource::wrap('sermons');
 
-        if ($request->has('full_sermons'))
+        if ($request->has('full_sermons')) {
             return SermonResource::collection($sermons);
-        else
+        } else {
             return ListResource::collection($sermons);
+        }
     }
 
     /**
@@ -72,7 +73,7 @@ class SermonController extends Controller
      * @return SermonResource
      * @throws \Illuminate\Auth\Access\AuthorizationException
      */
-    function view(Sermon $sermon)
+    public function view(Sermon $sermon)
     {
         $this->authorize('view', $sermon);
 
@@ -87,7 +88,7 @@ class SermonController extends Controller
      * @param UpdatePictureRequest $request
      * @return mixed
      */
-    function updatePicture(UpdatePictureRequest $request)
+    public function updatePicture(UpdatePictureRequest $request)
     {
         if ($this->sermonService->getSermon()->image()->exists()) {
             try {
@@ -96,19 +97,22 @@ class SermonController extends Controller
             }
         }
 
-        if ($request->hasImage && $request->has('image'))
+        if ($request->hasImage && $request->has('image')) {
             try {
                 MessageFollowers::withChain([
                     new UploadImage($this->sermonService->getSermon(), request('image')),
                     new ProcessImage($this->sermonService->getSermon()),
-                    new S3Upload($this->sermonService->getSermon())
+                    new S3Upload($this->sermonService->getSermon()),
                 ])->dispatch($this->sermonService->getSermon());
+
                 return $this->successResponse('Preacher image updated successfully!');
             } catch (\Exception $e) {
                 abort(500, $e->getMessage());
-            } else {
+            }
+        } else {
             try {
                 $this->sermonService->getSermon()->image()->delete();
+
                 return $this->successResponse('Preacher image deleted successfully!');
             } catch (\Exception $e) {
                 abort(500, $e->getMessage());
@@ -123,7 +127,7 @@ class SermonController extends Controller
      * @return mixed
      * @throws \Illuminate\Auth\Access\AuthorizationException
      */
-    function delete(GetRequest $request)
+    public function delete(GetRequest $request)
     {
         $this->authorize('delete', $this->sermonService->getSermon());
 
@@ -136,7 +140,7 @@ class SermonController extends Controller
      * @param UpdateRequest $request
      * @return \Illuminate\Http\JsonResponse|mixed
      */
-    function update(UpdateRequest $request)
+    public function update(UpdateRequest $request)
     {
         return $this->sermonService->update($request->validated(), 'Sermon updated successfully');
     }

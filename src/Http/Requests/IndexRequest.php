@@ -2,7 +2,6 @@
 
 namespace FaithGen\Sermons\Http\Requests;
 
-use FaithGen\Sermons\SermonHelper;
 use Illuminate\Foundation\Http\FormRequest;
 
 class IndexRequest extends FormRequest
@@ -25,9 +24,9 @@ class IndexRequest extends FormRequest
     public function rules()
     {
         return [
-           'limit' => 'integer:min:1',
+            'limit' => 'integer:min:1',
             'filter_text' => 'nullable',
-            'full_sermons' => 'nullable'
+            'full_sermons' => 'nullable',
         ];
     }
 }

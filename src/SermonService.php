@@ -1,8 +1,6 @@
 <?php
 
-
 namespace FaithGen\Sermons;
-
 
 use FaithGen\SDK\Traits\FileTraits;
 use FaithGen\Sermons\Models\Sermon;
@@ -18,10 +16,11 @@ class SermonService extends CRUDServices
 
     public function __construct(Sermon $sermon)
     {
-        if (request()->has('sermon_id'))
+        if (request()->has('sermon_id')) {
             $this->sermon = Sermon::findOrFail(request('sermon_id'));
-        else
+        } else {
             $this->sermon = $sermon;
+        }
     }
 
     /**
@@ -32,21 +31,21 @@ class SermonService extends CRUDServices
         return $this->sermon;
     }
 
-    function getUnsetFields()
+    public function getUnsetFields()
     {
         return ['sermon_id', 'image'];
     }
 
-    function getModel()
+    public function getModel()
     {
         return $this->getSermon();
     }
 
     /**
-     * This gets the relationship of the given model to the parent
+     * This gets the relationship of the given model to the parent.
      * @return mixed
      */
-    function getParentRelationship()
+    public function getParentRelationship()
     {
         return auth()->user()->sermons();
     }

@@ -38,16 +38,17 @@ class UploadImage implements ShouldQueue
     public function handle(ImageManager $imageManager)
     {
         if ($this->image) {
-            if ($this->sermon->image()->exists())
+            if ($this->sermon->image()->exists()) {
                 $fileName = $this->sermon->image->name;
-            else
-                $fileName = str_shuffle($this->sermon->id . time() . time()) . '.png';
-            $ogSave = storage_path('app/public/sermons/original/') . $fileName;
+            } else {
+                $fileName = str_shuffle($this->sermon->id.time().time()).'.png';
+            }
+            $ogSave = storage_path('app/public/sermons/original/').$fileName;
             $imageManager->make($this->image)->save($ogSave);
             $this->sermon->image()->updateOrcreate([
-                'imageable_id' => $this->sermon->id
+                'imageable_id' => $this->sermon->id,
             ], [
-                'name' => $fileName
+                'name' => $fileName,
             ]);
         }
     }

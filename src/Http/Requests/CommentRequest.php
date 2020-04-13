@@ -17,7 +17,10 @@ class CommentRequest extends FormRequest
      */
     public function authorize(SermonService $sermonService)
     {
-        if (auth()->user() instanceof Ministry) return $this->user()->can('view', $sermonService->getSermon());
+        if (auth()->user() instanceof Ministry) {
+            return $this->user()->can('view', $sermonService->getSermon());
+        }
+
         return true;
     }
 
@@ -30,11 +33,11 @@ class CommentRequest extends FormRequest
     {
         return [
             'sermon_id' => SermonHelper::$idValidation,
-            'comment' => 'required'
+            'comment' => 'required',
         ];
     }
 
-    function failedAuthorization()
+    public function failedAuthorization()
     {
         throw new AuthorizationException('You do not have access to this sermon');
     }

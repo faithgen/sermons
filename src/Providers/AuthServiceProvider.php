@@ -9,8 +9,9 @@ use Illuminate\Foundation\Support\Providers\AuthServiceProvider as ServiceProvid
 class AuthServiceProvider extends ServiceProvider
 {
     protected $policies = [
-        Sermon::class => SermonPolicy::class
+        Sermon::class => SermonPolicy::class,
     ];
+
     /**
      * Bootstrap services.
      *
