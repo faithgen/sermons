@@ -2,7 +2,6 @@
 
 namespace FaithGen\Sermons\Policies;
 
-use Carbon\Carbon;
 use FaithGen\SDK\Models\Ministry;
 use FaithGen\Sermons\Models\Sermon;
 use FaithGen\Sermons\SermonHelper;
@@ -15,8 +14,9 @@ class SermonPolicy
     /**
      * Determine whether the user can view the sermon.
      *
-     * @param Ministry $user
-     * @param Sermon $sermon
+     * @param  Ministry  $user
+     * @param  Sermon  $sermon
+     *
      * @return mixed
      */
     public function view(Ministry $user, Sermon $sermon)
@@ -27,7 +27,8 @@ class SermonPolicy
     /**
      * Determine whether the user can create sermons.
      *
-     * @param Ministry $user
+     * @param  Ministry  $user
+     *
      * @return mixed
      */
     public function create(Ministry $user)
@@ -36,7 +37,7 @@ class SermonPolicy
             return true;
         } else {
             $sermonsCount = Sermon::where('ministry_id', $user->id)
-                ->whereBetween('created_at', [Carbon::now()->firstOfMonth(), Carbon::now()->lastOfMonth()])
+                ->whereBetween('created_at', [now()->firstOfMonth(), now()->lastOfMonth()])
                 ->count();
             if ($sermonsCount >= SermonHelper::$freeSermonsCount) {
                 return false;
@@ -49,8 +50,9 @@ class SermonPolicy
     /**
      * Determine whether the user can update the sermon.
      *
-     * @param Ministry $user
-     * @param Sermon $sermon
+     * @param  Ministry  $user
+     * @param  Sermon  $sermon
+     *
      * @return mixed
      */
     public function update(Ministry $user, Sermon $sermon)
@@ -61,8 +63,9 @@ class SermonPolicy
     /**
      * Determine whether the user can delete the sermon.
      *
-     * @param Ministry $user
-     * @param Sermon $sermon
+     * @param  Ministry  $user
+     * @param  Sermon  $sermon
+     *
      * @return mixed
      */
     public static function delete(Ministry $user, Sermon $sermon)
