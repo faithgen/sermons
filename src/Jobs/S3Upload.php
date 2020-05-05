@@ -39,10 +39,6 @@ class S3Upload implements ShouldQueue
      */
     public function handle()
     {
-        try {
-            $this->saveFiles($this->sermon);
-        } catch (\Exception $e) {
-            Log::error($e->getMessage());
-        }
+        $this->saveFiles($this->sermon);
     }
 }

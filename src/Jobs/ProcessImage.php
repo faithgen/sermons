@@ -2,6 +2,7 @@
 
 namespace FaithGen\Sermons\Jobs;
 
+use FaithGen\SDK\Traits\ProcessesImages;
 use FaithGen\Sermons\Models\Sermon;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
@@ -15,7 +16,8 @@ class ProcessImage implements ShouldQueue
     use Dispatchable,
         InteractsWithQueue,
         Queueable,
-        SerializesModels;
+        SerializesModels,
+        ProcessesImages;
 
     public bool $deleteWhenMissingModels = true;
     protected Sermon $sermon;
@@ -39,20 +41,6 @@ class ProcessImage implements ShouldQueue
      */
     public function handle(ImageManager $imageManager)
     {
-        if ($this->sermon->image()->exists()) {
-            $ogImage = storage_path('app/public/sermons/original/').$this->sermon->image->name;
-            $thumb50 = storage_path('app/public/sermons/50-50/').$this->sermon->image->name;
-            $thumb100 = storage_path('app/public/sermons/100-100/').$this->sermon->image->name;
-
-            $imageManager->make($ogImage)->fit(100, 100, function ($constraint) {
-                $constraint->upsize();
-                $constraint->aspectRatio();
-            }, 'center')->save($thumb100);
-
-            $imageManager->make($ogImage)->fit(50, 50, function ($constraint) {
-                $constraint->upsize();
-                $constraint->aspectRatio();
-            }, 'center')->save($thumb50);
-        }
+        $this->processImage($imageManager, $this->sermon);
     }
 }
