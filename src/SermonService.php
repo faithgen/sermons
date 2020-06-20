@@ -31,7 +31,7 @@ class SermonService extends CRUDServices
         return $this->sermon;
     }
 
-    public function getUnsetFields()
+    public function getUnsetFields(): array
     {
         return ['sermon_id', 'image'];
     }
