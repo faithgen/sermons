@@ -3,7 +3,7 @@
 namespace FaithGen\Sermons\Http\Controllers;
 
 use FaithGen\SDK\Helpers\CommentHelper;
-use FaithGen\Sermons\Http\Requests\CommentRequest;
+use FaithGen\SDK\Http\Requests\CommentRequest;
 use FaithGen\Sermons\Http\Requests\CreateRequest;
 use FaithGen\Sermons\Http\Requests\GetRequest;
 use FaithGen\Sermons\Http\Requests\IndexRequest;
