@@ -12,33 +12,39 @@ class SermonService extends CRUDServices
     /**
      * @var Sermon
      */
-    private $sermon;
+    protected Sermon $sermon;
 
-    public function __construct(Sermon $sermon)
+    public function __construct()
     {
-        if (request()->has('sermon_id')) {
-            $this->sermon = Sermon::findOrFail(request('sermon_id'));
-        } else {
-            $this->sermon = $sermon;
+        $this->sermon = app(Sermon::class);
+
+        $sermonId = request()->route('sermon') ?? request('sermon_id');
+
+        if ($sermonId) {
+            $this->sermon = $this->sermon->resolveRouteBinding($sermonId);
         }
     }
 
     /**
-     * @return Sermon
+     * Retrieves an instance of sermon.
+     *
+     * @return \FaithGen\Sermons\Models\Sermon
      */
     public function getSermon(): Sermon
     {
         return $this->sermon;
     }
 
+    /**
+     * Makes a list of fields that you do not want to be sent
+     * to the create or update methods.
+     * Its mainly the fields that you do not have in the messages table.
+     *
+     * @return array
+     */
     public function getUnsetFields(): array
     {
         return ['sermon_id', 'image'];
-    }
-
-    public function getModel()
-    {
-        return $this->getSermon();
     }
 
     /**
