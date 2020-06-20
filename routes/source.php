@@ -12,6 +12,6 @@ Route::name('sermons.')
     ->group(function () {
         Route::post('', [SermonController::class, 'create']);
         Route::delete('{sermon}', [SermonController::class, 'delete']);
-        Route::post('/update-picture', [SermonController::class, 'updatePicture']);
+        Route::post('{sermon}/update-picture', [SermonController::class, 'updatePicture']);
         Route::post('/update', [SermonController::class, 'update']);
     });
