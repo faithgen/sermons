@@ -12,6 +12,8 @@ class UpdateRequest extends FormRequest
     /**
      * Determine if the user is authorized to make this request.
      *
+     * @param \FaithGen\Sermons\SermonService $sermonService
+     *
      * @return bool
      */
     public function authorize(SermonService $sermonService)
@@ -28,19 +30,18 @@ class UpdateRequest extends FormRequest
     public function rules()
     {
         return [
-            'title' => SermonHelper::$titleValidation,
-            'preacher' => SermonHelper::$titleValidation,
-            'main_verses' => 'required|array',
-            'date' => 'required|date',
+            'title'            => SermonHelper::$titleValidation,
+            'preacher'         => SermonHelper::$titleValidation,
+            'main_verses'      => 'required|array',
+            'date'             => 'required|date',
             'reference_verses' => 'array',
-            'sermon' => 'required|string|min:50',
-            'resource' => 'sometimes|url',
-            'sermon_id' => SermonHelper::$idValidation,
+            'sermon'           => 'required|string|min:50',
+            'resource'         => 'sometimes|url',
         ];
     }
 
     protected function failedAuthorization()
     {
-        throw new AuthorizationException('You can`t edit a sermon that you not own');
+        throw new AuthorizationException('You can`t edit a sermon that you do not own');
     }
 }
