@@ -5,12 +5,15 @@ namespace FaithGen\Sermons\Http\Requests;
 use FaithGen\SDK\Models\Ministry;
 use FaithGen\Sermons\SermonHelper;
 use FaithGen\Sermons\SermonService;
+use Illuminate\Auth\Access\AuthorizationException;
 use Illuminate\Foundation\Http\FormRequest;
 
 class GetRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
+     *
+     * @param \FaithGen\Sermons\SermonService $sermonService
      *
      * @return bool
      */
@@ -30,8 +33,11 @@ class GetRequest extends FormRequest
      */
     public function rules()
     {
-        return [
-            'sermon_id' => SermonHelper::$idValidation,
-        ];
+        return [];
+    }
+
+    public function failedAuthorization()
+    {
+        throw new AuthorizationException('You are not allowed to transact on this sermon.');
     }
 }

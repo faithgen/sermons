@@ -11,7 +11,7 @@ Route::name('sermons.')
     ->middleware('source.site')
     ->group(function () {
         Route::post('', [SermonController::class, 'create']);
-        Route::delete('delete', [SermonController::class, 'delete']);
+        Route::delete('{sermon}', [SermonController::class, 'delete']);
         Route::post('/update-picture', [SermonController::class, 'updatePicture']);
         Route::post('/update', [SermonController::class, 'update']);
     });
