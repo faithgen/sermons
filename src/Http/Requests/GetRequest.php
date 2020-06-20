@@ -3,7 +3,6 @@
 namespace FaithGen\Sermons\Http\Requests;
 
 use FaithGen\SDK\Models\Ministry;
-use FaithGen\Sermons\SermonHelper;
 use FaithGen\Sermons\SermonService;
 use Illuminate\Auth\Access\AuthorizationException;
 use Illuminate\Foundation\Http\FormRequest;
